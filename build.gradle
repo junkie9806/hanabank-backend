@@ -1,0 +1,60 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '2.5.5'
+	id 'io.spring.dependency-management' version '1.1.2'
+	id 'application' // 이 부분 추가
+}
+
+group = 'com.tomato'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = '17'
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+
+	implementation 'org.mariadb.jdbc:mariadb-java-client:2.7.3' // 버전은 프로젝트에 맞게 선택
+
+
+	//aws s3연동을 위해서 추가
+	implementation 'com.amazonaws:aws-java-sdk-s3:1.11.1000' // 버전은 최신으로 확인해주세요
+
+
+
+	//mockpartfile 사용하기 위해서 추가
+	implementation 'org.springframework:spring-test'
+
+
+
+
+
+
+}
+
+bootJar {
+	archiveFileName = 'backend-0.0.1-SNAPSHOT.jar'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

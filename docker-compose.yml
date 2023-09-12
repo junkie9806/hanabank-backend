@@ -1,0 +1,52 @@
+version: '3.7'
+services:
+  backend:
+    image: docker.io/library/backend:latest
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: always
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/tomato
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 1234
+    depends_on:
+      - mariadb
+    networks:
+      - tomato_network
+
+  mariadb:
+    image: mariadb:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: tomato
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 1234
+    restart: always
+    ports:
+      - "3306:3306"
+    networks:
+      - tomato_network
+
+  flask_app:
+    build:
+      context: ./flask_app
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    networks:
+      - tomato_network
+
+  react_app:
+    build:
+      context: ./react_app
+      dockerfile: Dockerfile
+    ports:
+      - "80:3000"
+    networks:
+      - tomato_network
+
+networks:
+  tomato_network:
